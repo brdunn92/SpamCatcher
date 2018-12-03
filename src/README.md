@@ -1,7 +1,3 @@
 # Email Spam Checker
-This email spam checker uses two machine learning classifiers: kNN and Naive Bayes.
+Data Mining Assignment to utilize kNN and Naive Bayes to determine if email is spam.
 
-## Dataset & Accuracy
-Dataset is split into training set and testing set with ratio of 1:1 in Train and Test folders.
-
-Accuracies for both classifiers are about 95%.
