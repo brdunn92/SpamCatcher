@@ -12,10 +12,10 @@ public class Naive {
   public static Map<String, Integer> words = new HashMap<String, Integer>();
   public static Map<String, Integer> wordsSpam = new HashMap<String, Integer>();
 
-  public String accuracy() throws IOException {
+  public void accuracy(String filelocation) throws IOException {
 
     // getting train files
-    final File trainFolder = new File("./train");
+    final File trainFolder = new File(filelocation + "/train");
     for (final File trainFile : trainFolder.listFiles()) {
       @SuppressWarnings("resource")
 	BufferedReader br = new BufferedReader(new FileReader(trainFile));
@@ -31,7 +31,6 @@ public class Naive {
 
     int dWords = count(train, words);// distinct words in regular email
     int dSpamWords = count(trainSpam, wordsSpam);// distinct words in spam
-System.out.println(words.size() + wordsSpam.size()+"------");
     // calculate total class possibility
     double probEmail = (double) words.size() / (words.size() + wordsSpam.size());
     double probSpam = 1 - probEmail;
@@ -41,7 +40,7 @@ System.out.println(words.size() + wordsSpam.size()+"------");
     double isCorrect = 0;
 
     // getting test files
-    final File testFolder = new File("./test");
+    final File testFolder = new File(filelocation + "/test");
     for (final File testFile : testFolder.listFiles()) {
       @SuppressWarnings("resource")
 	BufferedReader br2 = new BufferedReader(new FileReader(testFile));
@@ -89,7 +88,7 @@ System.out.println(words.size() + wordsSpam.size()+"------");
 
     // return accuracy
     double acc = (double) (isCorrect * 100 / totalTestFile);
-    return acc + "%";
+    System.out.println("Accuracy: " + acc + "%");
   }// end accuracy method
 
   public static int count(ArrayList<String> row, Map<String, Integer> w) {

@@ -27,11 +27,11 @@ public class KNN {
   public static int testCount = 0;
   public static int trainCount = 0;
 
-  public void kNNaccuracy() throws IOException {
+  public void kNNaccuracy(String filelocation, int k) throws IOException {
 
     // All files in testing and training data in the form of strings
-    train = read("./train");
-    test = read("./test");
+    train = read(filelocation + "/train");
+    test = read(filelocation + "/test");
 
     emailCountTrain = trainCount - spamCountTrain;
     emailCountTest = testCount - spamCountTest;
@@ -64,36 +64,24 @@ public class KNN {
       listOfMapsTest.add(countOccurence(strings));
     }
 
-//    // Gets cosine similarity and accuracy for each K value
-//    cosineSimilarity(1);
-//    System.out.print("When k=1, accuracy: ");
-//    getAccuracy();
-//    cosineSimilarity(3);
-//    System.out.print("When k=3, accuracy: ");
-//    getAccuracy();
-//    cosineSimilarity(5);
-//    System.out.print("When k=5, accuracy: ");
-//    getAccuracy();
-//    cosineSimilarity(19);
-//    System.out.print("When k=19, accuracy: ");
-//    getAccuracy();
-//
-//  }
+    // Gets cosine similarity and accuracy for each K value
+    cosineSimilarity(1);
+  	System.out.print("When k=1, accuracy: ");
+  	getAccuracy();
+  	cosineSimilarity(3);
+  	System.out.print("When k=3, accuracy: ");
+  	getAccuracy();
+  	cosineSimilarity(5);
+  	System.out.print("When k=5, accuracy: ");
+  	getAccuracy();
+  	cosineSimilarity(19);
+  	System.out.print("When k=19, accuracy: ");
+  	getAccuracy();
 
-    // Gets euclidean distance and accuracy for each K value
-    euclideanDistance(1);
-    System.out.print("When k=1, accuracy: ");
-    getAccuracy();
-    euclideanDistance(3);
-    System.out.print("When k=3, accuracy: ");
-    getAccuracy();
-    euclideanDistance(5);
-    System.out.print("When k=5, accuracy: ");
-    getAccuracy();
-    euclideanDistance(19);
-    System.out.print("When k=19, accuracy: ");
-    getAccuracy();
 
+    cosineSimilarity(k);
+    System.out.print("When k=" + k + ", accuracy: ");
+    getAccuracy();
   }
   
   // Gets accuracy for KNN
@@ -126,55 +114,31 @@ public class KNN {
   // Creates finalList, a list of all cosine similarity values
   // Calls getLength and dotProd for calculation
   // Calls getKNN to find the K nearest neighbors
-//  public static void cosineSimilarity(int k) {
-//
-//    // Cycles through each test record and compares with each training record
-//    for (int i = 0; i < listOfMapsTest.size(); i++) {
-//      for (int j = 0; j < listOfMapsTrain.size(); j++) {
-//
-//        // Obtains each test term vector
-//        List<Double> x = listOfMapsTest.get(i);
-//
-//        // Obtains each train term vector
-//        List<Double> y = listOfMapsTrain.get(j);
-//
-//        // Calculate the cosine similarity
-//        double cosSim = (dotProd(x, y) / getLength(x, y));
-//        finalList.add(cosSim);// Adds each cosine value to list
-//
-//      }
-//      // Gets K nearest neighbors, by finding greatest values in finalList
-//      getKNN(k);
-//      finalList = new ArrayList<Double>();// Resets list
-//
-//    }
-//
-//  }
+  public static void cosineSimilarity(int k) {
 
-  public static void euclideanDistance(int k) {
+    // Cycles through each test record and compares with each training record
+    for (int i = 0; i < listOfMapsTest.size(); i++) {
+      for (int j = 0; j < listOfMapsTrain.size(); j++) {
 
-	    // Cycles through each test record and compares with each training record
-	    for (int i = 0; i < listOfMapsTest.size(); i++) {
-	      for (int j = 0; j < listOfMapsTrain.size(); j++) {
+        // Obtains each test term vector
+        List<Double> x = listOfMapsTest.get(i);
 
-	        // Obtains each test term vector
-	        List<Double> x = listOfMapsTest.get(i);
+        // Obtains each train term vector
+        List<Double> y = listOfMapsTrain.get(j);
 
-	        // Obtains each train term vector
-	        List<Double> y = listOfMapsTrain.get(j);
+        // Calculate the cosine similarity
+        double cosSim = (dotProd(x, y) / getLength(x, y));
+        finalList.add(cosSim);// Adds each cosine value to list
 
-	        // Calculate the cosine similarity
-	        double euclDist = (euDist(x, y));
-	        finalList.add(euclDist);// Adds each distance value to list
+      }
+      // Gets K nearest neighbors, by finding greatest values in finalList
+      getKNN(k);
+      finalList = new ArrayList<Double>();// Resets list
 
-	      }
-	      // Gets K nearest neighbors, by finding greatest values in finalList
-	      getKNN(k);
-	      finalList = new ArrayList<Double>();// Resets list
+    }
 
-	    }
+  }
 
-	  }
   
   public static void getKNN(int k) {
 
@@ -263,47 +227,39 @@ public class KNN {
   }
 
   // DOT PRODUCT
-//  public static double dotProd(List<Double> a, List<Double> b) {
-//    double sum = 0;// Total dotProd
-//    for (int i = 0; i < a.size(); i++) {
-//      // Multiplies each element in Vector by one another
-//      sum += a.get(i) * b.get(i);
-//    }
-//    return sum;
-//  }
+  public static double dotProd(List<Double> a, List<Double> b) {
+    double sum = 0;// Total dotProd
+    for (int i = 0; i < a.size(); i++) {
+      // Multiplies each element in Vector by one another
+      sum += a.get(i) * b.get(i);
+    }
+    return sum;
+  }
 
-  public static double euDist(List<Double> a, List<Double> b) {
-	    double sum = 0;
-	    for (int i = 0; i < a.size(); i++) {
-	      // Multiplies each element in Vector by one another
-	      sum += Math.pow((a.get(i) - b.get(i)), 2);
-	    }
-	    return Math.pow(sum, 0.5);
-	  }
   
-//  public static double getLength(List<Double> a, List<Double> b) {
-//
-//    // Length from testing set
-//    double sum1 = 0.0;
-//    for (int i = 0; i < a.size(); i++) {
-//      sum1 += a.get(i) * a.get(i);
-//    }
-//
-//    sum1 = Math.pow(sum1, .5);// Sum Raised to .5 power
-//
-//    // Length from training set
-//    double sum2 = 0.0;
-//    for (int i = 0; i < b.size(); i++) {
-//      sum2 += b.get(i) * b.get(i);
-//    }
-//
-//    sum2 = Math.pow(sum2, .5);// Sum Raised to .5 power
-//
-//    double sum3 = sum1 * sum2;// Multiply sums
-//
-//    return sum3;// returns denominator
-//
-//  }
+  public static double getLength(List<Double> a, List<Double> b) {
+
+    // Length from testing set
+    double sum1 = 0.0;
+    for (int i = 0; i < a.size(); i++) {
+      sum1 += a.get(i) * a.get(i);
+    }
+
+    sum1 = Math.pow(sum1, .5);// Sum Raised to .5 power
+
+    // Length from training set
+    double sum2 = 0.0;
+    for (int i = 0; i < b.size(); i++) {
+      sum2 += b.get(i) * b.get(i);
+    }
+
+    sum2 = Math.pow(sum2, .5);// Sum Raised to .5 power
+
+    double sum3 = sum1 * sum2;// Multiply sums
+
+    return sum3;// returns denominator
+
+  }
 
   // Makes every entry in HashMap 0
   public static Map<String, Double> makeZero(Map<String, Double> wordClone) {
